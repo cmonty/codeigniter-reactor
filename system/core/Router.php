@@ -450,6 +450,53 @@ class CI_Router {
 			$this->set_method($routing['function']);
 		}
 	}
+	
+	/**
+	*	Sets and validates the RESTful request method
+	* @access public
+	* @return null 
+	*/
+	function set_verb() 
+	{
+		
+		$this->input =& load_class('Input', 'core');
+		
+		// Whitelist accepted methods
+		$valid_methods = array('GET', 'POST', 'PUT', 'DELETE', 'HEAD');
+		
+		// Grab the method override hidden form field
+		$request_field = $this->input->post('_method', TRUE);
+		
+		// There wasn't a POST field called _method
+		if($request_field === FALSE) 
+		{
+			
+			// Let's check the X-HTTP-METHOD-OVERRIDE header
+			$header_override = $this->input->server('X-HTTP-METHOD-OVERRIDE', TRUE);
+			
+			// No request header override, so let's just use REQUEST_METHOD
+			if($header_override === FALSE) 
+			{
+				$this->request = $this->input->server('REQUEST_METHOD', TRUE);
+			} 
+			
+			else 
+			{
+				$this->request = $header_override;
+			}
+			
+		} 
+		
+		else 
+		{
+			$this->request = strtoupper($request_field);
+		}
+		
+		// Make sure we have a whitelisted method		
+		if(!in_array($this->request, $valid_methods)) {
+			show_error('Invalid request method');
+		}
+	} // set_verb
 
 
 }
