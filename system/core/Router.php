@@ -309,19 +309,16 @@ class CI_Router {
 		if (isset($this->routes[$uri]))
 		{
 			// If RESTful routing isn't used, build default array
-			if(!is_array($this->routes[$uri]))
+			if (!is_array($this->routes[$uri]))
 			{
 				$this->routes[$uri] = array($this->request => $this->routes[$uri]);
 			}
 			
 			// Set the RESTful request
-			if(isset($this->routes[$uri][$this->request])) 
+			if (isset($this->routes[$uri][$this->request])) 
 			{
 				return $this->_set_request(explode('/', $this->routes[$uri][$this->request]));		
 			} 
-			
-			// Oops. System couldn't find a route that matched your request
-			show_error('You used an invalid request method for this route.');
 			
 		}
 
@@ -497,14 +494,14 @@ class CI_Router {
 		$request_field = $this->input->post('_method', TRUE);
 		
 		// There wasn't a POST field called _method
-		if($request_field === FALSE) 
+		if ($request_field === FALSE) 
 		{
 			
 			// Let's check the X-HTTP-METHOD-OVERRIDE header
 			$header_override = $this->input->server('X-HTTP-METHOD-OVERRIDE', TRUE);
 			
 			// No request header override, so let's just use REQUEST_METHOD
-			if($header_override === FALSE) 
+			if ($header_override === FALSE) 
 			{
 				$this->request = $this->input->server('REQUEST_METHOD', TRUE);
 			} 
@@ -522,7 +519,8 @@ class CI_Router {
 		}
 		
 		// Make sure we have a whitelisted method		
-		if(!in_array($this->request, $valid_methods)) {
+		if (!in_array($this->request, $valid_methods)) 
+		{
 			show_error('Invalid request method');
 		}
 	} // set_verb
