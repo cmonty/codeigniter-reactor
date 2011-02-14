@@ -308,6 +308,11 @@ class CI_Router {
 		// Is there a literal match?  If so we're done
 		if (isset($this->routes[$uri]))
 		{
+			// If RESTful routing isn't used, build default array
+			if(!is_array($this->routes[$uri]))
+			{
+				$this->routes[$uri] = array($this->request => $this->routes[$uri]);
+			}
 			return $this->_set_request(explode('/', $this->routes[$uri]));
 		}
 
