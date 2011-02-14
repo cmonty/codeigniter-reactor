@@ -299,6 +299,9 @@ class CI_Router {
 	 */
 	function _parse_routes()
 	{
+		// Set the Request Method
+		$this->set_verb();
+		
 		// Turn the segment array into a URI string
 		$uri = implode('/', $this->uri->segments);
 
