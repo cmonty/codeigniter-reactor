@@ -313,7 +313,16 @@ class CI_Router {
 			{
 				$this->routes[$uri] = array($this->request => $this->routes[$uri]);
 			}
-			return $this->_set_request(explode('/', $this->routes[$uri]));
+			
+			// Set the RESTful request
+			if(isset($this->routes[$uri][$this->request])) 
+			{
+				return $this->_set_request(explode('/', $this->routes[$uri][$this->request]));		
+			} 
+			
+			// Oops. System couldn't find a route that matched your request
+			show_error('You used an invalid request method for this route.');
+			
 		}
 
 		// Loop through the route array looking for wild-cards
