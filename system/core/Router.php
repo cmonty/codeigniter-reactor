@@ -508,7 +508,7 @@ class CI_Router {
 			
 			else 
 			{
-				$this->request = $header_override;
+				$this->request = strtoupper($header_override);
 			}
 			
 		} 
