@@ -329,24 +329,30 @@ class CI_Router {
 		foreach ($this->routes as $key => $val)
 		{
 			// If RESTful routing isn't used, build default array
-			if(!is_array($val))
+			if (!is_array($val))
 			{
 				$val = array($this->request => $val);
 			}
 			
-			// Convert wild-cards to RegEx
-			$key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
-
-			// Does the RegEx match?
-			if (preg_match('#^'.$key.'$#', $uri))
+			// Set $val
+			if (isset($val[$this->request]))
 			{
-				// Do we have a back-reference?
-				if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE)
-				{
-					$val = preg_replace('#^'.$key.'$#', $val, $uri);
-				}
+				$val = $val[$this->request];
+				
+				// Convert wild-cards to RegEx
+				$key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
 
-				return $this->_set_request(explode('/', $val));
+				// Does the RegEx match?
+				if (preg_match('#^'.$key.'$#', $uri))
+				{
+					// Do we have a back-reference?
+					if (strpos($val, '$') !== FALSE AND strpos($key, '(') !== FALSE)
+					{
+						$val = preg_replace('#^'.$key.'$#', $val, $uri);
+					}
+
+					return $this->_set_request(explode('/', $val));
+				}
 			}
 		}
 
