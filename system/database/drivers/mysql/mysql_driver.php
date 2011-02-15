@@ -286,7 +286,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	{
 		if (is_array($str))
 		{
-			foreach($str as $key => $val)
+			foreach ($str as $key => $val)
 	   		{
 				$str[$key] = $this->escape_str($val, $like);
 	   		}
@@ -532,7 +532,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _insert($table, $keys, $values)
 	{
-		return "INSERT INTO ".$table." (`".implode('`, `', $keys)."`) VALUES (".implode(', ', $values).")";
+		return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
 	}
 
 	// --------------------------------------------------------------------
@@ -551,7 +551,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _replace($table, $keys, $values)
 	{
-		return "REPLACE INTO ".$table." (`".implode('`, `', $keys)."`) VALUES (".implode(', ', $values).")";
+		return "REPLACE INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
 	}
 
 	// --------------------------------------------------------------------
@@ -569,7 +569,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _insert_batch($table, $keys, $values)
 	{
-		return "INSERT INTO ".$table." (`".implode('`, `', $keys)."`) VALUES ".implode(', ', $values);
+		return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES ".implode(', ', $values);
 	}
 
 	// --------------------------------------------------------------------
@@ -590,9 +590,9 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _update($table, $values, $where, $orderby = array(), $limit = FALSE)
 	{
-		foreach($values as $key => $val)
+		foreach ($values as $key => $val)
 		{
-			$valstr[] = sprintf('`%s` = %s', $key, $val);
+			$valstr[] = $key . ' = ' . $val;
 		}
 
 		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
@@ -627,11 +627,11 @@ class CI_DB_mysql_driver extends CI_DB {
 		$ids = array();
 		$where = ($where != '' AND count($where) >=1) ? implode(" ", $where).' AND ' : '';
 
-		foreach($values as $key => $val)
+		foreach ($values as $key => $val)
 		{
 			$ids[] = $val[$index];
 
-			foreach(array_keys($val) as $field)
+			foreach (array_keys($val) as $field)
 			{
 				if ($field != $index)
 				{
@@ -643,7 +643,7 @@ class CI_DB_mysql_driver extends CI_DB {
 		$sql = "UPDATE ".$table." SET ";
 		$cases = '';
 
-		foreach($final as $k => $v)
+		foreach ($final as $k => $v)
 		{
 			$cases .= $k.' = CASE '."\n";
 			foreach ($v as $row)
