@@ -81,7 +81,7 @@ To overcome this, CodeIgniter allows you to remap the URI handler.</p>
 <h2>Setting your own routing rules</h2>
 
 <p>Routing rules are defined in your <var>application/config/routes.php</var> file.  In it you'll see an array called <dfn>$route</dfn> that
-permits you to specify your own routing criteria. Routes can either be specified using <dfn>wildcards</dfn> or <dfn>Regular Expressions</dfn></p>
+permits you to specify your own routing criteria. Routes can either be specified using <dfn>wildcards</dfn> or <dfn>Regular Expressions</dfn> and can specify any <dfn>HTTP Request Method</dfn>.</p>
 
 
 <h2>Wildcards</h2>
@@ -146,6 +146,24 @@ when people load your root URL. In the above example, the "welcome" class would 
 are encouraged to always have a default route otherwise a 404 page will appear by default.</p>
 
 <p class="important"><strong>Important:</strong>&nbsp; The reserved routes must come before any wildcard or regular expression routes.</p>
+
+<h2>HTTP Request Methods</h2>
+
+<p>You can also remap routes based on the HTTP Request Methods <dfn>GET</dfn>, <dfn>POST</dfn>, <dfn>PUT</dfn>, and <dfn>DELETE</dfn>. This allows you to remap multiple actions for a single route, helpful in RESTful applications.</p>
+
+<p>To assign a request method to your route, create an associative array with the request method as a key and the destination as a value:</p>
+
+<code>
+	<p>$route['products'] = array('GET' => 'products/index', 'POST' => 'products/create');</p>
+	<p>$route['products/(:num)'] = array('GET' => 'products/show/$1', 'PUT' => 'products/update/$1');</p>
+</code>
+
+<p>Since some legacy web servers don't recognize certain HTTP Request Methods, CodeIgniter checks two additional places for overrides. When using standard HTML forms, include a hidden element named <dfn>_method</dfn>:</p>
+
+<code>&lt;input type="hidden" name="_method" value="PUT" /&gt;</code>
+
+<p>For more advanced applications, you can set the <dfn>X-HTTP-METHOD-OVERRIDE</dfn> header to the desired request method.</p>
+
 
 </div>
 <!-- END CONTENT -->
