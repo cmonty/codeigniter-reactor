@@ -299,8 +299,8 @@ class CI_Router {
 	 */
 	function _parse_routes()
 	{
-		// Set the Request Method
-		$this->set_verb();
+		// Set HTTP Request Method
+		$this->set_http_method();
 		
 		// Turn the segment array into a URI string
 		$uri = implode('/', $this->uri->segments);
@@ -311,13 +311,13 @@ class CI_Router {
 			// If RESTful routing isn't used, build default array
 			if (!is_array($this->routes[$uri]))
 			{
-				$this->routes[$uri] = array($this->request => $this->routes[$uri]);
+				$this->routes[$uri] = array($this->http_method => $this->routes[$uri]);
 			}
 			
 			// Set the RESTful request
-			if (isset($this->routes[$uri][$this->request])) 
+			if (isset($this->routes[$uri][$this->http_method])) 
 			{
-				return $this->_set_request(explode('/', $this->routes[$uri][$this->request]));		
+				return $this->_set_request(explode('/', $this->routes[$uri][$this->http_method]));		
 			} 
 			
 		}
@@ -328,13 +328,13 @@ class CI_Router {
 			// If RESTful routing isn't used, build default array
 			if (!is_array($val))
 			{
-				$val = array($this->request => $val);
+				$val = array($this->http_method => $val);
 			}
 			
 			// Set $val
-			if (isset($val[$this->request]))
+			if (isset($val[$this->http_method]))
 			{
-				$val = $val[$this->request];
+				$val = $val[$this->http_method];
 				
 				// Convert wild-cards to RegEx
 				$key = str_replace(':any', '.+', str_replace(':num', '[0-9]+', $key));
@@ -477,12 +477,15 @@ class CI_Router {
 		}
 	}
 	
+	// --------------------------------------------------------------------
+	
 	/**
-	*	Sets and validates the RESTful request method
+	*	Set and validate the RESTful HTTP request method
+	*
 	* @access public
 	* @return null 
 	*/
-	function set_verb() 
+	function set_http_method() 
 	{
 		
 		$this->input =& load_class('Input', 'core');
@@ -503,27 +506,27 @@ class CI_Router {
 			// No request header override, so let's just use REQUEST_METHOD
 			if ($header_override === FALSE) 
 			{
-				$this->request = $this->input->server('REQUEST_METHOD', TRUE);
+				$this->http_method = $this->input->server('REQUEST_METHOD', TRUE);
 			} 
 			
 			else 
 			{
-				$this->request = strtoupper($header_override);
+				$this->http_method = strtoupper($header_override);
 			}
 			
 		} 
 		
 		else 
 		{
-			$this->request = strtoupper($request_field);
+			$this->http_method = strtoupper($request_field);
 		}
 		
 		// Make sure we have a whitelisted method		
-		if (!in_array($this->request, $valid_methods)) 
+		if (!in_array($this->http_method, $valid_methods)) 
 		{
 			show_error('Invalid request method');
 		}
-	} // set_verb
+	}
 
 
 }
