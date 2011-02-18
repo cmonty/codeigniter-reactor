@@ -487,7 +487,8 @@ class CI_Router {
 	*/
 	function set_http_method() 
 	{
-		
+		// Set the default http method
+		$this->http_method = 'GET';
 		$this->input =& load_class('Input', 'core');
 		
 		// Whitelist accepted methods
