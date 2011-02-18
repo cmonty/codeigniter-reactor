@@ -208,13 +208,14 @@ class CI_Input {
 	* @param	string	the cookie domain.  Usually:  .yourdomain.com
 	* @param	string	the cookie path
 	* @param	string	the cookie prefix
+	* @param	bool	true makes the cookie secure
 	* @return	void
 	*/
-	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '')
+	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = NULL)
 	{
 		if (is_array($name))
 		{
-			foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'name') as $item)
+			foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'name', 'secure') as $item)
 			{
 				if (isset($name[$item]))
 				{
@@ -245,7 +246,13 @@ class CI_Input {
 			$expire = ($expire > 0) ? time() + $expire : 0;
 		}
 
-		setcookie($prefix.$name, $value, $expire, $path, $domain, 0);
+		// If TRUE/FALSE is not provided, use the config
+		if ( ! is_bool($secure))
+		{
+			$secure = (bool) (config_item('cookie_secure') === TRUE);
+		}
+
+		setcookie($prefix.$name, $value, $expire, $path, $domain, $secure);
 	}
 
 	// --------------------------------------------------------------------
