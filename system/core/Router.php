@@ -501,8 +501,8 @@ class CI_Router {
 		if ($request_field === FALSE) 
 		{
 			
-			// Let's check the X-HTTP-METHOD-OVERRIDE header
-			$header_override = $this->input->server('X-HTTP-METHOD-OVERRIDE', TRUE);
+			// Let's check the X-METHOD-OVERRIDE header
+			$header_override = $this->input->server('HTTP_X_METHOD_OVERRIDE', TRUE);
 			
 			// No request header override, so let's just use REQUEST_METHOD
 			if ($header_override === FALSE) 
