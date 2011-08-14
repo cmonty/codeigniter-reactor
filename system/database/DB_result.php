@@ -28,6 +28,7 @@
  */
 class CI_DB_result {
 
+<<<<<<< HEAD
 	var $conn_id		      = NULL;
 	var $result_id		      = NULL;
 	var $result_array	      = array();
@@ -36,6 +37,16 @@ class CI_DB_result {
 	var $current_row	      = 0;
 	var $num_rows		      = 0;
 	var $row_data		      = NULL;
+=======
+	var $conn_id				= NULL;
+	var $result_id				= NULL;
+	var $result_array			= array();
+	var $result_object			= array();
+	var $custom_result_object	= array();
+	var $current_row			= 0;
+	var $num_rows				= 0;
+	var $row_data				= NULL;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 
 	/**
@@ -47,13 +58,20 @@ class CI_DB_result {
 	 */
 	function result($type = 'object')
 	{
+<<<<<<< HEAD
         if ($type == 'array') return $this->result_array();
         else if ($type == 'object') return $this->result_object();
         else return $this->custom_result_object($type);
+=======
+		if ($type == 'array') return $this->result_array();
+		else if ($type == 'object') return $this->result_object();
+		else return $this->custom_result_object($type);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 
 	// --------------------------------------------------------------------
 
+<<<<<<< HEAD
     /**
      * Custom query result.
      *
@@ -88,6 +106,47 @@ class CI_DB_result {
         // return the array
         return $this->custom_result_object[$class_name] = $result_object;
     }
+=======
+	/**
+	 * Custom query result.
+	 *
+	 * @param class_name A string that represents the type of object you want back
+	 * @return array of objects
+	 */
+	function custom_result_object($class_name)
+	{
+		if (array_key_exists($class_name, $this->custom_result_object))
+		{
+			return $this->custom_result_object[$class_name];
+		}
+
+		if ($this->result_id === FALSE OR $this->num_rows() == 0)
+		{
+			return array();
+		}
+
+		// add the data to the object
+		$this->_data_seek(0);
+		$result_object = array();
+
+		while ($row = $this->_fetch_object())
+		{
+			$object = new $class_name();
+			
+			foreach ($row as $key => $value)
+			{
+				$object->$key = $value;
+			}
+			
+			$result_object[] = $object;
+		}
+
+		// return the array
+		return $this->custom_result_object[$class_name] = $result_object;
+	}
+
+	// --------------------------------------------------------------------
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 	/**
 	 * Query result.  "object" version.
@@ -180,9 +239,15 @@ class CI_DB_result {
 			$n = 0;
 		}
 
+<<<<<<< HEAD
         if ($type == 'object') return $this->row_object($n);
         else if ($type == 'array') return $this->row_array($n);
         else return $this->custom_row_object($n, $type);
+=======
+		if ($type == 'object') return $this->row_object($n);
+		else if ($type == 'array') return $this->row_array($n);
+		else return $this->custom_row_object($n, $type);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 
 	// --------------------------------------------------------------------
@@ -219,7 +284,11 @@ class CI_DB_result {
 
 	// --------------------------------------------------------------------
 
+<<<<<<< HEAD
     /**
+=======
+	/**
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 * Returns a single result row - custom object version
 	 *
 	 * @access	public
@@ -242,7 +311,11 @@ class CI_DB_result {
 		return $result[$this->current_row];
 	}
 
+<<<<<<< HEAD
     /**
+=======
+	/**
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 * Returns a single result row - object version
 	 *
 	 * @access	public

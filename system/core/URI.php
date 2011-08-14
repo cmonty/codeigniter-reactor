@@ -120,7 +120,11 @@ class CI_URI {
 		$path = (isset($_SERVER[$uri])) ? $_SERVER[$uri] : @getenv($uri);
 		$this->_set_uri_string($path);
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	// --------------------------------------------------------------------
 
 	/**
@@ -133,7 +137,11 @@ class CI_URI {
 	{
 		// Filter out control characters
 		$str = remove_invisible_characters($str, FALSE);
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		// If the URI contains only a slash we'll kill it
 		$this->uri_string = ($str == '/') ? '' : $str;
 	}
@@ -151,7 +159,11 @@ class CI_URI {
 	 */
 	private function _detect_uri()
 	{
+<<<<<<< HEAD
 		if ( ! isset($_SERVER['REQUEST_URI']))
+=======
+		if ( ! isset($_SERVER['REQUEST_URI']) OR ! isset($_SERVER['SCRIPT_NAME']))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		{
 			return '';
 		}
@@ -184,12 +196,20 @@ class CI_URI {
 			$_SERVER['QUERY_STRING'] = '';
 			$_GET = array();
 		}
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		if ($uri == '/' || empty($uri))
 		{
 			return '/';
 		}
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		$uri = parse_url($uri, PHP_URL_PATH);
 
 		// Do some final cleaning of the URI and return it

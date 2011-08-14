@@ -16,7 +16,7 @@
 // ------------------------------------------------------------------------
 
 /**
- * MySQL Database Adapter Class
+ * SQLSRV Database Adapter Class
  *
  * Note: _DB is an extender class that the app controller
  * creates dynamically based on whether the active record
@@ -28,31 +28,24 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/database/
  */
-class CI_DB_mysql_driver extends CI_DB {
+class CI_DB_sqlsrv_driver extends CI_DB {
 
-	var $dbdriver = 'mysql';
+	var $dbdriver = 'sqlsrv';
 
 	// The character used for escaping
-	var	$_escape_char = '`';
+	var $_escape_char = '';
 
-	// clause and character used for LIKE escape sequences - not used in MySQL
-	var $_like_escape_str = '';
-	var $_like_escape_chr = '';
-
-	/**
-	 * Whether to use the MySQL "delete hack" which allows the number
-	 * of affected rows to be shown. Uses a preg_replace when enabled,
-	 * adding a bit more processing to all queries.
-	 */
-	var $delete_hack = TRUE;
+	// clause and character used for LIKE escape sequences
+	var $_like_escape_str = " ESCAPE '%s' ";
+	var $_like_escape_chr = '!';
 
 	/**
 	 * The syntax to count rows is slightly different across different
 	 * database engines, so this string appears in each driver and is
 	 * used for the count_all() and count_all_results() functions.
 	 */
-	var $_count_string = 'SELECT COUNT(*) AS ';
-	var $_random_keyword = ' RAND()'; // database specific random keyword
+	var $_count_string = "SELECT COUNT(*) AS ";
+	var $_random_keyword = ' ASC'; // not currently supported
 
 	/**
 	 * Non-persistent database connection
@@ -60,14 +53,27 @@ class CI_DB_mysql_driver extends CI_DB {
 	 * @access	private called by the base class
 	 * @return	resource
 	 */
-	function db_connect()
+	function db_connect($pooling = false)
 	{
-		if ($this->port != '')
-		{
-			$this->hostname .= ':'.$this->port;
+		// Check for a UTF-8 charset being passed as CI's default 'utf8'.
+		$character_set = (0 === strcasecmp('utf8', $this->char_set)) ? 'UTF-8' : $this->char_set;
+
+		$connection = array(
+			'UID'				=> empty($this->username) ? '' : $this->username,
+			'PWD'				=> empty($this->password) ? '' : $this->password,
+			'Database'			=> $this->database,
+			'ConnectionPooling' => $pooling ? 1 : 0,
+			'CharacterSet'		=> $character_set,
+			'ReturnDatesAsStrings' => 1
+		);
+		
+		// If the username and password are both empty, assume this is a 
+		// 'Windows Authentication Mode' connection.
+		if(empty($connection['UID']) && empty($connection['PWD'])) {
+			unset($connection['UID'], $connection['PWD']);
 		}
 
-		return @mysql_connect($this->hostname, $this->username, $this->password, TRUE);
+		return sqlsrv_connect($this->hostname, $connection);
 	}
 
 	// --------------------------------------------------------------------
@@ -80,12 +86,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function db_pconnect()
 	{
-		if ($this->port != '')
-		{
-			$this->hostname .= ':'.$this->port;
-		}
-
-		return @mysql_pconnect($this->hostname, $this->username, $this->password);
+		$this->db_connect(TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -101,10 +102,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function reconnect()
 	{
-		if (mysql_ping($this->conn_id) === FALSE)
-		{
-			$this->conn_id = FALSE;
-		}
+		// not implemented in MSSQL
 	}
 
 	// --------------------------------------------------------------------
@@ -117,7 +115,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function db_select()
 	{
-		return @mysql_select_db($this->database, $this->conn_id);
+		return $this->_execute('USE ' . $this->database);
 	}
 
 	// --------------------------------------------------------------------
@@ -132,39 +130,8 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function db_set_charset($charset, $collation)
 	{
-<<<<<<< HEAD
-		return @mysql_query("SET NAMES '".$this->escape_str($charset)."' COLLATE '".$this->escape_str($collation)."'", $this->conn_id);
-=======
-		static $use_set_names;
-		
-		if ( ! isset($use_set_names))
-		{
-			// mysql_set_charset() requires PHP >= 5.2.3 and MySQL >= 5.0.7, use SET NAMES as fallback
-			$use_set_names = (version_compare(PHP_VERSION, '5.2.3', '>=') && version_compare(mysql_get_server_info(), '5.0.7', '>=')) ? FALSE : TRUE;
-		}
-
-		if ($use_set_names)
-		{
-			return @mysql_query("SET NAMES '".$this->escape_str($charset)."' COLLATE '".$this->escape_str($collation)."'", $this->conn_id);
-		}
-		else
-		{
-			return @mysql_set_charset($charset, $this->conn_id);
-		}
->>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Version number query string
-	 *
-	 * @access	public
-	 * @return	string
-	 */
-	function _version()
-	{
-		return "SELECT version() AS ver";
+		// @todo - add support if needed
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -179,7 +146,10 @@ class CI_DB_mysql_driver extends CI_DB {
 	function _execute($sql)
 	{
 		$sql = $this->_prep_query($sql);
-		return @mysql_query($sql, $this->conn_id);
+		return sqlsrv_query($this->conn_id, $sql, null, array(
+			'Scrollable'				=> SQLSRV_CURSOR_STATIC,
+			'SendStreamParamsAtExec'	=> true
+		));
 	}
 
 	// --------------------------------------------------------------------
@@ -195,16 +165,6 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _prep_query($sql)
 	{
-		// "DELETE FROM TABLE" returns 0 affected rows This hack modifies
-		// the query so that it returns the number of affected rows
-		if ($this->delete_hack === TRUE)
-		{
-			if (preg_match('/^\s*DELETE\s+FROM\s+(\S+)\s*$/i', $sql))
-			{
-				$sql = preg_replace("/^\s*DELETE\s+FROM\s+(\S+)\s*$/", "DELETE FROM \\1 WHERE 1=1", $sql);
-			}
-		}
-
 		return $sql;
 	}
 
@@ -234,9 +194,7 @@ class CI_DB_mysql_driver extends CI_DB {
 		// even if the queries produce a successful result.
 		$this->_trans_failure = ($test_mode === TRUE) ? TRUE : FALSE;
 
-		$this->simple_query('SET AUTOCOMMIT=0');
-		$this->simple_query('START TRANSACTION'); // can also be BEGIN or BEGIN WORK
-		return TRUE;
+		return sqlsrv_begin_transaction($this->conn_id);
 	}
 
 	// --------------------------------------------------------------------
@@ -260,9 +218,7 @@ class CI_DB_mysql_driver extends CI_DB {
 			return TRUE;
 		}
 
-		$this->simple_query('COMMIT');
-		$this->simple_query('SET AUTOCOMMIT=1');
-		return TRUE;
+		return sqlsrv_commit($this->conn_id);
 	}
 
 	// --------------------------------------------------------------------
@@ -286,9 +242,7 @@ class CI_DB_mysql_driver extends CI_DB {
 			return TRUE;
 		}
 
-		$this->simple_query('ROLLBACK');
-		$this->simple_query('SET AUTOCOMMIT=1');
-		return TRUE;
+		return sqlsrv_rollback($this->conn_id);
 	}
 
 	// --------------------------------------------------------------------
@@ -303,36 +257,8 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function escape_str($str, $like = FALSE)
 	{
-		if (is_array($str))
-		{
-			foreach ($str as $key => $val)
-	   		{
-				$str[$key] = $this->escape_str($val, $like);
-	   		}
-
-	   		return $str;
-	   	}
-
-		if (function_exists('mysql_real_escape_string') AND is_resource($this->conn_id))
-		{
-			$str = mysql_real_escape_string($str, $this->conn_id);
-		}
-		elseif (function_exists('mysql_escape_string'))
-		{
-			$str = mysql_escape_string($str);
-		}
-		else
-		{
-			$str = addslashes($str);
-		}
-
-		// escape LIKE condition wildcards
-		if ($like === TRUE)
-		{
-			$str = str_replace(array('%', '_'), array('\\%', '\\_'), $str);
-		}
-
-		return $str;
+		// Escape single quotes
+		return str_replace("'", "''", $str);
 	}
 
 	// --------------------------------------------------------------------
@@ -345,20 +271,54 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function affected_rows()
 	{
-		return @mysql_affected_rows($this->conn_id);
+		return @sqlrv_rows_affected($this->conn_id);
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * Insert ID
-	 *
-	 * @access	public
-	 * @return	integer
-	 */
+	* Insert ID
+	*
+	* Returns the last id created in the Identity column.
+	*
+	* @access public
+	* @return integer
+	*/
 	function insert_id()
 	{
-		return @mysql_insert_id($this->conn_id);
+		return $this->query('select @@IDENTITY as insert_id')->row('insert_id');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	* Parse major version
+	*
+	* Grabs the major version number from the
+	* database server version string passed in.
+	*
+	* @access private
+	* @param string $version
+	* @return int16 major version number
+	*/
+	function _parse_major_version($version)
+	{
+		preg_match('/([0-9]+)\.([0-9]+)\.([0-9]+)/', $version, $ver_info);
+		return $ver_info[1]; // return the major version b/c that's all we're interested in.
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	* Version number query string
+	*
+	* @access public
+	* @return string
+	*/
+	function _version()
+	{
+		$info = sqlsrv_server_info($this->conn_id);
+		return sprintf("select '%s' as ver", $info['SQLServerVersion']);
 	}
 
 	// --------------------------------------------------------------------
@@ -376,19 +336,15 @@ class CI_DB_mysql_driver extends CI_DB {
 	function count_all($table = '')
 	{
 		if ($table == '')
-		{
-			return 0;
-		}
-
-		$query = $this->query($this->_count_string . $this->_protect_identifiers('numrows') . " FROM " . $this->_protect_identifiers($table, TRUE, NULL, FALSE));
-
+			return '0';
+	
+		$query = $this->query("SELECT COUNT(*) AS numrows FROM " . $this->dbprefix . $table);
+		
 		if ($query->num_rows() == 0)
-		{
-			return 0;
-		}
+			return '0';
 
 		$row = $query->row();
-		return (int) $row->numrows;
+		return $row->numrows;
 	}
 
 	// --------------------------------------------------------------------
@@ -404,30 +360,23 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _list_tables($prefix_limit = FALSE)
 	{
-		$sql = "SHOW TABLES FROM ".$this->_escape_char.$this->database.$this->_escape_char;
-
-		if ($prefix_limit !== FALSE AND $this->dbprefix != '')
-		{
-			$sql .= " LIKE '".$this->escape_like_str($this->dbprefix)."%'";
-		}
-
-		return $sql;
+		return "SELECT name FROM sysobjects WHERE type = 'U' ORDER BY name";
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * Show column query
+	 * List column query
 	 *
 	 * Generates a platform-specific query string so that the column names can be fetched
 	 *
-	 * @access	public
+	 * @access	private
 	 * @param	string	the table name
 	 * @return	string
 	 */
 	function _list_columns($table = '')
 	{
-		return "SHOW COLUMNS FROM ".$this->_protect_identifiers($table, TRUE, NULL, FALSE);
+		return "SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME = '".$this->_escape_table($table)."'";
 	}
 
 	// --------------------------------------------------------------------
@@ -443,7 +392,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _field_data($table)
 	{
-		return "SELECT * FROM ".$table." LIMIT 1";
+		return "SELECT TOP 1 * FROM " . $this->_escape_table($table);	
 	}
 
 	// --------------------------------------------------------------------
@@ -456,7 +405,8 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _error_message()
 	{
-		return mysql_error($this->conn_id);
+		$error = array_shift(sqlsrv_errors());
+		return !empty($error['message']) ? $error['message'] : null;
 	}
 
 	// --------------------------------------------------------------------
@@ -469,10 +419,27 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _error_number()
 	{
-		return mysql_errno($this->conn_id);
+		$error = array_shift(sqlsrv_errors());
+		return isset($error['SQLSTATE']) ? $error['SQLSTATE'] : null;
 	}
 
 	// --------------------------------------------------------------------
+
+	/**
+	 * Escape Table Name
+	 *
+	 * This function adds backticks if the table name has a period
+	 * in it. Some DBs will get cranky unless periods are escaped
+	 *
+	 * @access	private
+	 * @param	string	the table name
+	 * @return	string
+	 */
+	function _escape_table($table)
+	{
+		return $table;
+	}	
+
 
 	/**
 	 * Escape the SQL Identifiers
@@ -485,33 +452,7 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _escape_identifiers($item)
 	{
-		if ($this->_escape_char == '')
-		{
-			return $item;
-		}
-
-		foreach ($this->_reserved_identifiers as $id)
-		{
-			if (strpos($item, '.'.$id) !== FALSE)
-			{
-				$str = $this->_escape_char. str_replace('.', $this->_escape_char.'.', $item);
-
-				// remove duplicates if the user already included the escape
-				return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
-			}
-		}
-
-		if (strpos($item, '.') !== FALSE)
-		{
-			$str = $this->_escape_char.str_replace('.', $this->_escape_char.'.'.$this->_escape_char, $item).$this->_escape_char;
-		}
-		else
-		{
-			$str = $this->_escape_char.$item.$this->_escape_char;
-		}
-
-		// remove duplicates if the user already included the escape
-		return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
+		return $item;
 	}
 
 	// --------------------------------------------------------------------
@@ -533,7 +474,7 @@ class CI_DB_mysql_driver extends CI_DB {
 			$tables = array($tables);
 		}
 
-		return '('.implode(', ', $tables).')';
+		return implode(', ', $tables);
 	}
 
 	// --------------------------------------------------------------------
@@ -550,49 +491,11 @@ class CI_DB_mysql_driver extends CI_DB {
 	 * @return	string
 	 */
 	function _insert($table, $keys, $values)
-	{
-		return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
+	{	
+		return "INSERT INTO ".$this->_escape_table($table)." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
 	}
 
 	// --------------------------------------------------------------------
-
-
-	/**
-	 * Replace statement
-	 *
-	 * Generates a platform-specific replace string from the supplied data
-	 *
-	 * @access	public
-	 * @param	string	the table name
-	 * @param	array	the insert keys
-	 * @param	array	the insert values
-	 * @return	string
-	 */
-	function _replace($table, $keys, $values)
-	{
-		return "REPLACE INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Insert_batch statement
-	 *
-	 * Generates a platform-specific insert string from the supplied data
-	 *
-	 * @access	public
-	 * @param	string	the table name
-	 * @param	array	the insert keys
-	 * @param	array	the insert values
-	 * @return	string
-	 */
-	function _insert_batch($table, $keys, $values)
-	{
-		return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES ".implode(', ', $values);
-	}
-
-	// --------------------------------------------------------------------
-
 
 	/**
 	 * Update statement
@@ -607,81 +510,17 @@ class CI_DB_mysql_driver extends CI_DB {
 	 * @param	array	the limit clause
 	 * @return	string
 	 */
-	function _update($table, $values, $where, $orderby = array(), $limit = FALSE)
+	function _update($table, $values, $where)
 	{
-		foreach ($values as $key => $val)
+		foreach($values as $key => $val)
 		{
-			$valstr[] = $key . ' = ' . $val;
+			$valstr[] = $key." = ".$val;
 		}
-
-		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
-
-		$orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
-
-		$sql = "UPDATE ".$table." SET ".implode(', ', $valstr);
-
-		$sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
-
-		$sql .= $orderby.$limit;
-
-		return $sql;
+	
+		return "UPDATE ".$this->_escape_table($table)." SET ".implode(', ', $valstr)." WHERE ".implode(" ", $where);
 	}
-
+	
 	// --------------------------------------------------------------------
-
-
-	/**
-	 * Update_Batch statement
-	 *
-	 * Generates a platform-specific batch update string from the supplied data
-	 *
-	 * @access	public
-	 * @param	string	the table name
-	 * @param	array	the update data
-	 * @param	array	the where clause
-	 * @return	string
-	 */
-	function _update_batch($table, $values, $index, $where = NULL)
-	{
-		$ids = array();
-		$where = ($where != '' AND count($where) >=1) ? implode(" ", $where).' AND ' : '';
-
-		foreach ($values as $key => $val)
-		{
-			$ids[] = $val[$index];
-
-			foreach (array_keys($val) as $field)
-			{
-				if ($field != $index)
-				{
-					$final[$field][] =  'WHEN '.$index.' = '.$val[$index].' THEN '.$val[$field];
-				}
-			}
-		}
-
-		$sql = "UPDATE ".$table." SET ";
-		$cases = '';
-
-		foreach ($final as $k => $v)
-		{
-			$cases .= $k.' = CASE '."\n";
-			foreach ($v as $row)
-			{
-				$cases .= $row."\n";
-			}
-
-			$cases .= 'ELSE '.$k.' END, ';
-		}
-
-		$sql .= substr($cases, 0, -2);
-
-		$sql .= ' WHERE '.$where.$index.' IN ('.implode(',', $ids).')';
-
-		return $sql;
-	}
-
-	// --------------------------------------------------------------------
-
 
 	/**
 	 * Truncate statement
@@ -712,25 +551,9 @@ class CI_DB_mysql_driver extends CI_DB {
 	 * @param	string	the limit clause
 	 * @return	string
 	 */
-	function _delete($table, $where = array(), $like = array(), $limit = FALSE)
+	function _delete($table, $where)
 	{
-		$conditions = '';
-
-		if (count($where) > 0 OR count($like) > 0)
-		{
-			$conditions = "\nWHERE ";
-			$conditions .= implode("\n", $this->ar_where);
-
-			if (count($where) > 0 && count($like) > 0)
-			{
-				$conditions .= " AND ";
-			}
-			$conditions .= implode("\n", $like);
-		}
-
-		$limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
-
-		return "DELETE FROM ".$table.$conditions.$limit;
+		return "DELETE FROM ".$this->_escape_table($table)." WHERE ".implode(" ", $where);
 	}
 
 	// --------------------------------------------------------------------
@@ -748,16 +571,9 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _limit($sql, $limit, $offset)
 	{
-		if ($offset == 0)
-		{
-			$offset = '';
-		}
-		else
-		{
-			$offset .= ", ";
-		}
-
-		return $sql."LIMIT ".$offset.$limit;
+		$i = $limit + $offset;
+	
+		return preg_replace('/(^\SELECT (DISTINCT)?)/i','\\1 TOP '.$i.' ', $sql);		
 	}
 
 	// --------------------------------------------------------------------
@@ -771,11 +587,12 @@ class CI_DB_mysql_driver extends CI_DB {
 	 */
 	function _close($conn_id)
 	{
-		@mysql_close($conn_id);
+		@sqlsrv_close($conn_id);
 	}
 
 }
 
 
-/* End of file mysql_driver.php */
-/* Location: ./system/database/drivers/mysql/mysql_driver.php */
+
+/* End of file mssql_driver.php */
+/* Location: ./system/database/drivers/mssql/mssql_driver.php */

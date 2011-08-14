@@ -37,7 +37,11 @@
 |
 */
 
+<<<<<<< HEAD
 $autoload['packages'] = array(APPPATH.'third_party');
+=======
+$autoload['packages'] = array();
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 
 /*

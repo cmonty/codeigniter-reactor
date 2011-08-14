@@ -68,7 +68,12 @@ class CI_Security {
 		}
 
 		// Append application specific cookie prefix
+<<<<<<< HEAD
 		if (config_item('cookie_prefix')) {
+=======
+		if (config_item('cookie_prefix'))
+		{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			$this->_csrf_cookie_name = config_item('cookie_prefix').$this->_csrf_cookie_name;
 		}
 

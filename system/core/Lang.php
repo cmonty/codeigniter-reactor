@@ -51,14 +51,22 @@ class CI_Lang {
 	 */
 	function load($langfile = '', $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '')
 	{
+<<<<<<< HEAD
 		$langfile = str_replace(EXT, '', $langfile);
+=======
+		$langfile = str_replace('.php', '', $langfile);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 		if ($add_suffix == TRUE)
 		{
 			$langfile = str_replace('_lang.', '', $langfile).'_lang';
 		}
 
+<<<<<<< HEAD
 		$langfile .= EXT;
+=======
+		$langfile .= '.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 		if (in_array($langfile, $this->is_loaded, TRUE))
 		{

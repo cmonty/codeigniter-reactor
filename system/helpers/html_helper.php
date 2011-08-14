@@ -40,9 +40,16 @@
  */
 if ( ! function_exists('heading'))
 {
+<<<<<<< HEAD
 	function heading($data = '', $h = '1')
 	{
 		return "<h".$h.">".$data."</h".$h.">";
+=======
+	function heading($data = '', $h = '1', $attributes = '')
+	{
+		$attributes = ($attributes != '') ? ' '.$attributes : $attributes;
+		return "<h".$h.$attributes.">".$data."</h".$h.">";
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 }
 
@@ -258,6 +265,7 @@ if ( ! function_exists('doctype'))
 
 		if ( ! is_array($_doctypes))
 		{
+<<<<<<< HEAD
 			if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/doctypes'.EXT))
 			{
 				include(APPPATH.'config/'.ENVIRONMENT.'/doctypes'.EXT);
@@ -265,6 +273,15 @@ if ( ! function_exists('doctype'))
 			elseif (is_file(APPPATH.'config/doctypes'.EXT))
 			{
 				include(APPPATH.'config/doctypes'.EXT);
+=======
+			if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/doctypes.php'))
+			{
+				include(APPPATH.'config/'.ENVIRONMENT.'/doctypes.php');
+			}
+			elseif (is_file(APPPATH.'config/doctypes.php'))
+			{
+				include(APPPATH.'config/doctypes.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			}
 
 			if ( ! is_array($_doctypes))

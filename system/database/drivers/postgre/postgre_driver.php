@@ -554,6 +554,27 @@ class CI_DB_postgre_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
+<<<<<<< HEAD
+=======
+	 * Insert_batch statement
+	 *
+	 * Generates a platform-specific insert string from the supplied data
+	 *
+	 * @access  public
+	 * @param   string  the table name
+	 * @param   array   the insert keys
+	 * @param   array   the insert values
+	 * @return  string
+	 */
+	function _insert_batch($table, $keys, $values)
+	{
+		return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES ".implode(', ', $values);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 * Update statement
 	 *
 	 * Generates a platform-specific update string from the supplied data

@@ -424,8 +424,13 @@ class CI_DB_driver {
 
 		if ( ! class_exists($driver))
 		{
+<<<<<<< HEAD
 			include_once(BASEPATH.'database/DB_result'.EXT);
 			include_once(BASEPATH.'database/drivers/'.$this->dbdriver.'/'.$this->dbdriver.'_result'.EXT);
+=======
+			include_once(BASEPATH.'database/DB_result.php');
+			include_once(BASEPATH.'database/drivers/'.$this->dbdriver.'/'.$this->dbdriver.'_result.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		return $driver;
@@ -1115,7 +1120,11 @@ class CI_DB_driver {
 
 		if ( ! class_exists('CI_DB_Cache'))
 		{
+<<<<<<< HEAD
 			if ( ! @include(BASEPATH.'database/DB_cache'.EXT))
+=======
+			if ( ! @include(BASEPATH.'database/DB_cache.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			{
 				return $this->cache_off();
 			}

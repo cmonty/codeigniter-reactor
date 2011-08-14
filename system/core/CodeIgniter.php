@@ -46,13 +46,18 @@
  *  Load the global functions
  * ------------------------------------------------------
  */
+<<<<<<< HEAD
 	require(BASEPATH.'core/Common'.EXT);
+=======
+	require(BASEPATH.'core/Common.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 /*
  * ------------------------------------------------------
  *  Load the framework constants
  * ------------------------------------------------------
  */
+<<<<<<< HEAD
 	if (defined('ENVIRONMENT') AND file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants'.EXT))
 	{
 		require(APPPATH.'config/'.ENVIRONMENT.'/constants'.EXT);
@@ -60,6 +65,15 @@
 	else
 	{
 		require(APPPATH.'config/constants'.EXT);
+=======
+	if (defined('ENVIRONMENT') AND file_exists(APPPATH.'config/'.ENVIRONMENT.'/constants.php'))
+	{
+		require(APPPATH.'config/'.ENVIRONMENT.'/constants.php');
+	}
+	else
+	{
+		require(APPPATH.'config/constants.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 
 /*
@@ -224,7 +238,11 @@
  *
  */
 	// Load the base controller class
+<<<<<<< HEAD
 	require BASEPATH.'core/Controller'.EXT;
+=======
+	require BASEPATH.'core/Controller.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 	function &get_instance()
 	{
@@ -232,20 +250,34 @@
 	}
 
 
+<<<<<<< HEAD
 	if (file_exists(APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller'.EXT))
 	{
 		require APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller'.EXT;
+=======
+	if (file_exists(APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php'))
+	{
+		require APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 
 	// Load the local application controller
 	// Note: The Router class automatically validates the controller path using the router->_validate_request().
 	// If this include fails it means that the default controller in the Routes.php file is not resolving to something valid.
+<<<<<<< HEAD
 	if ( ! file_exists(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().EXT))
+=======
+	if ( ! file_exists(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	{
 		show_error('Unable to load your default controller. Please make sure the controller specified in your Routes.php file is valid.');
 	}
 
+<<<<<<< HEAD
 	include(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().EXT);
+=======
+	include(APPPATH.'controllers/'.$RTR->fetch_directory().$RTR->fetch_class().'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 	// Set a mark point for benchmarking
 	$BM->mark('loading_time:_base_classes_end');
@@ -318,12 +350,20 @@
 				$method = (isset($x[1]) ? $x[1] : 'index');
 				if ( ! class_exists($class))
 				{
+<<<<<<< HEAD
 					if ( ! file_exists(APPPATH.'controllers/'.$class.EXT))
+=======
+					if ( ! file_exists(APPPATH.'controllers/'.$class.'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 					{
 						show_404("{$class}/{$method}");
 					}
 
+<<<<<<< HEAD
 					include_once(APPPATH.'controllers/'.$class.EXT);
+=======
+					include_once(APPPATH.'controllers/'.$class.'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 					unset($CI);
 					$CI = new $class();
 				}

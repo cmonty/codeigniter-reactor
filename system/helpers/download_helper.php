@@ -58,6 +58,7 @@ if ( ! function_exists('force_download'))
 		$extension = end($x);
 
 		// Load the mime types
+<<<<<<< HEAD
 		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/mimes'.EXT))
 		{
 			include(APPPATH.'config/'.ENVIRONMENT.'/mimes'.EXT);
@@ -65,6 +66,15 @@ if ( ! function_exists('force_download'))
 		elseif (is_file(APPPATH.'config/mimes'.EXT))
 		{
 			include(APPPATH.'config/mimes'.EXT);
+=======
+		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
+		}
+		elseif (is_file(APPPATH.'config/mimes.php'))
+		{
+			include(APPPATH.'config/mimes.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		// Set a default mime if we can't find it

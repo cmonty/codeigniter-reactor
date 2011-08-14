@@ -10,29 +10,49 @@
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 2.0
+<<<<<<< HEAD
  * @filesource	
+=======
+ * @filesource
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
  */
 
 // ------------------------------------------------------------------------
 
 /**
+<<<<<<< HEAD
  * CodeIgniter Dummy Caching Class 
+=======
+ * CodeIgniter Dummy Caching Class
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
  *
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Core
  * @author		ExpressionEngine Dev Team
+<<<<<<< HEAD
  * @link		
+=======
+ * @link
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
  */
 
 class CI_Cache_dummy extends CI_Driver {
 
 	/**
+<<<<<<< HEAD
 	 * Get 
 	 *
 	 * Since this is the dummy class, it's always going to return FALSE.
 	 *
 	 * @param 	string	
+=======
+	 * Get
+	 *
+	 * Since this is the dummy class, it's always going to return FALSE.
+	 *
+	 * @param 	string
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 * @return 	Boolean		FALSE
 	 */
 	public function get($id)
@@ -40,8 +60,13 @@ class CI_Cache_dummy extends CI_Driver {
 		return FALSE;
 	}
 
+<<<<<<< HEAD
 	// ------------------------------------------------------------------------	
 	
+=======
+	// ------------------------------------------------------------------------
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	/**
 	 * Cache Save
 	 *
@@ -55,7 +80,11 @@ class CI_Cache_dummy extends CI_Driver {
 	{
 		return TRUE;
 	}
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	// ------------------------------------------------------------------------
 
 	/**
@@ -112,7 +141,11 @@ class CI_Cache_dummy extends CI_Driver {
 	/**
 	 * Is this caching driver supported on the system?
 	 * Of course this one is.
+<<<<<<< HEAD
 	 * 
+=======
+	 *
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 * @return TRUE;
 	 */
 	public function is_supported()
@@ -121,9 +154,18 @@ class CI_Cache_dummy extends CI_Driver {
 	}
 
 	// ------------------------------------------------------------------------
+<<<<<<< HEAD
 	
 }
 // End Class
 
 /* End of file Cache_apc.php */
 /* Location: ./system/libraries/Cache/drivers/Cache_apc.php */
+=======
+
+}
+// End Class
+
+/* End of file Cache_dummy.php */
+/* Location: ./system/libraries/Cache/drivers/Cache_dummy.php */
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90

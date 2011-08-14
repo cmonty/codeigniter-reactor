@@ -28,11 +28,19 @@ function &DB($params = '', $active_record_override = NULL)
 	if (is_string($params) AND strpos($params, '://') === FALSE)
 	{
 		// Is the config file in the environment folder?
+<<<<<<< HEAD
 		if ( ! defined('ENVIRONMENT') OR ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database'.EXT))
 		{
 			if ( ! file_exists($file_path = APPPATH.'config/database'.EXT))
 			{
 				show_error('The configuration file database'.EXT.' does not exist.');
+=======
+		if ( ! defined('ENVIRONMENT') OR ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/database.php'))
+		{
+			if ( ! file_exists($file_path = APPPATH.'config/database.php'))
+			{
+				show_error('The configuration file database.php does not exist.');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			}
 		}
 		
@@ -116,11 +124,19 @@ function &DB($params = '', $active_record_override = NULL)
 		$active_record = $active_record_override;
 	}
 
+<<<<<<< HEAD
 	require_once(BASEPATH.'database/DB_driver'.EXT);
 
 	if ( ! isset($active_record) OR $active_record == TRUE)
 	{
 		require_once(BASEPATH.'database/DB_active_rec'.EXT);
+=======
+	require_once(BASEPATH.'database/DB_driver.php');
+
+	if ( ! isset($active_record) OR $active_record == TRUE)
+	{
+		require_once(BASEPATH.'database/DB_active_rec.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 		if ( ! class_exists('CI_DB'))
 		{
@@ -135,7 +151,11 @@ function &DB($params = '', $active_record_override = NULL)
 		}
 	}
 
+<<<<<<< HEAD
 	require_once(BASEPATH.'database/drivers/'.$params['dbdriver'].'/'.$params['dbdriver'].'_driver'.EXT);
+=======
+	require_once(BASEPATH.'database/drivers/'.$params['dbdriver'].'/'.$params['dbdriver'].'_driver.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 	// Instantiate the DB adapter
 	$driver = 'CI_DB_'.$params['dbdriver'].'_driver';

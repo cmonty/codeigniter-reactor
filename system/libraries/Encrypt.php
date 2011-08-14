@@ -524,7 +524,11 @@ class CI_Encrypt {
 		{
 			if ( ! function_exists('mhash'))
 			{
+<<<<<<< HEAD
 				require_once(BASEPATH.'libraries/Sha1'.EXT);
+=======
+				require_once(BASEPATH.'libraries/Sha1.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				$SH = new CI_SHA;
 				return $SH->generate($str);
 			}

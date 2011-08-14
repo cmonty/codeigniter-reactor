@@ -87,6 +87,7 @@ class CI_Router {
 		}
 
 		// Load the routes.php file.
+<<<<<<< HEAD
 		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/routes'.EXT))
 		{
 			include(APPPATH.'config/'.ENVIRONMENT.'/routes'.EXT);
@@ -94,6 +95,15 @@ class CI_Router {
 		elseif (is_file(APPPATH.'config/routes'.EXT))
 		{
 			include(APPPATH.'config/routes'.EXT);
+=======
+		if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/routes.php'))
+		{
+			include(APPPATH.'config/'.ENVIRONMENT.'/routes.php');
+		}
+		elseif (is_file(APPPATH.'config/routes.php'))
+		{
+			include(APPPATH.'config/routes.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 		
 		$this->routes = ( ! isset($route) OR ! is_array($route)) ? array() : $route;
@@ -227,7 +237,11 @@ class CI_Router {
 		}
 
 		// Does the requested controller exist in the root folder?
+<<<<<<< HEAD
 		if (file_exists(APPPATH.'controllers/'.$segments[0].EXT))
+=======
+		if (file_exists(APPPATH.'controllers/'.$segments[0].'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		{
 			return $segments;
 		}
@@ -242,7 +256,11 @@ class CI_Router {
 			if (count($segments) > 0)
 			{
 				// Does the requested controller exist in the sub-folder?
+<<<<<<< HEAD
 				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$segments[0].EXT))
+=======
+				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$segments[0].'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				{
 					show_404($this->fetch_directory().$segments[0]);
 				}
@@ -264,7 +282,11 @@ class CI_Router {
 				}
 
 				// Does the default controller exist in the sub-folder?
+<<<<<<< HEAD
 				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$this->default_controller.EXT))
+=======
+				if ( ! file_exists(APPPATH.'controllers/'.$this->fetch_directory().$this->default_controller.'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				{
 					$this->directory = '';
 					return array();

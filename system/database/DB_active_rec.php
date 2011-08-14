@@ -58,7 +58,13 @@ class CI_DB_active_record extends CI_DB_driver {
 	var $ar_cache_having		= array();
 	var $ar_cache_orderby		= array();
 	var $ar_cache_set			= array();
+<<<<<<< HEAD
 
+=======
+	
+	var $ar_no_escape 			= array();
+	var $ar_cache_no_escape     = array();
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 	// --------------------------------------------------------------------
 
@@ -73,12 +79,15 @@ class CI_DB_active_record extends CI_DB_driver {
 	 */
 	function select($select = '*', $escape = NULL)
 	{
+<<<<<<< HEAD
 		// Set the global value if this was sepecified
 		if (is_bool($escape))
 		{
 			$this->_protect_identifiers = $escape;
 		}
 
+=======
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		if (is_string($select))
 		{
 			$select = explode(',', $select);
@@ -91,11 +100,19 @@ class CI_DB_active_record extends CI_DB_driver {
 			if ($val != '')
 			{
 				$this->ar_select[] = $val;
+<<<<<<< HEAD
+=======
+				$this->ar_no_escape[] = $escape;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 				if ($this->ar_caching === TRUE)
 				{
 					$this->ar_cache_select[] = $val;
 					$this->ar_cache_exists[] = 'select';
+<<<<<<< HEAD
+=======
+					$this->ar_cache_no_escape[] = $escape;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				}
 			}
 		}
@@ -441,10 +458,17 @@ class CI_DB_active_record extends CI_DB_driver {
 
 					$v = ' '.$this->escape($v);
 				}
+<<<<<<< HEAD
 
 				if ( ! $this->_has_operator($k))
 				{
 					$k .= ' =';
+=======
+				
+				if ( ! $this->_has_operator($k))
+				{
+					$k .= ' = ';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				}
 			}
 			else
@@ -1718,7 +1742,11 @@ class CI_DB_active_record extends CI_DB_driver {
 				// is because until the user calls the from() function we don't know if there are aliases
 				foreach ($this->ar_select as $key => $val)
 				{
+<<<<<<< HEAD
 					$this->ar_select[$key] = $this->_protect_identifiers($val);
+=======
+					$this->ar_select[$key] = $this->_protect_identifiers($val, FALSE, $this->ar_no_escape[$key]);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				}
 
 				$sql .= implode(', ', $this->ar_select);
@@ -1753,9 +1781,13 @@ class CI_DB_active_record extends CI_DB_driver {
 
 		if (count($this->ar_where) > 0 OR count($this->ar_like) > 0)
 		{
+<<<<<<< HEAD
 			$sql .= "\n";
 
 			$sql .= "WHERE ";
+=======
+			$sql .= "\nWHERE ";
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		$sql .= implode("\n", $this->ar_where);
@@ -1938,6 +1970,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	{
 		$this->_reset_run(
 							array(
+<<<<<<< HEAD
 									'ar_cache_select'	=> array(),
 									'ar_cache_from'		=> array(),
 									'ar_cache_join'		=> array(),
@@ -1948,6 +1981,19 @@ class CI_DB_active_record extends CI_DB_driver {
 									'ar_cache_orderby'	=> array(),
 									'ar_cache_set'		=> array(),
 									'ar_cache_exists'	=> array()
+=======
+									'ar_cache_select'		=> array(),
+									'ar_cache_from'			=> array(),
+									'ar_cache_join'			=> array(),
+									'ar_cache_where'		=> array(),
+									'ar_cache_like'			=> array(),
+									'ar_cache_groupby'		=> array(),
+									'ar_cache_having'		=> array(),
+									'ar_cache_orderby'		=> array(),
+									'ar_cache_set'			=> array(),
+									'ar_cache_exists'		=> array(),
+									'ar_cache_no_escape'	=> array()
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 								)
 							);
 	}
@@ -1989,6 +2035,11 @@ class CI_DB_active_record extends CI_DB_driver {
 		{
 			$this->_track_aliases($this->ar_from);
 		}
+<<<<<<< HEAD
+=======
+
+		$this->ar_no_escape = $this->ar_cache_no_escape;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 
 	// --------------------------------------------------------------------
@@ -2032,6 +2083,10 @@ class CI_DB_active_record extends CI_DB_driver {
 								'ar_orderby'		=> array(),
 								'ar_wherein'		=> array(),
 								'ar_aliased_tables'	=> array(),
+<<<<<<< HEAD
+=======
+								'ar_no_escape'		=> array(),
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 								'ar_distinct'		=> FALSE,
 								'ar_limit'			=> FALSE,
 								'ar_offset'			=> FALSE,

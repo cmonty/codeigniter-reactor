@@ -234,7 +234,11 @@ class CI_DB_forge {
 			show_error('A table name is required for that operation.');
 		}
 
+<<<<<<< HEAD
 		$sql = $this->_rename_table($table_name, $new_table_name);
+=======
+		$sql = $this->_rename_table($this->db->dbprefix.$table_name, $this->db->dbprefix.$new_table_name);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		return $this->db->query($sql);
 	}
 

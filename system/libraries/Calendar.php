@@ -47,7 +47,11 @@ class CI_Calendar {
 	{
 		$this->CI =& get_instance();
 
+<<<<<<< HEAD
 		if ( ! in_array('calendar_lang'.EXT, $this->CI->lang->is_loaded, TRUE))
+=======
+		if ( ! in_array('calendar_lang.php', $this->CI->lang->is_loaded, TRUE))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		{
 			$this->CI->lang->load('calendar');
 		}

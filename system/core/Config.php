@@ -80,7 +80,11 @@ class CI_Config {
 	 */
 	function load($file = '', $use_sections = FALSE, $fail_gracefully = FALSE)
 	{
+<<<<<<< HEAD
 		$file = ($file == '') ? 'config' : str_replace(EXT, '', $file);
+=======
+		$file = ($file == '') ? 'config' : str_replace('.php', '', $file);
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		$found = FALSE;
 		$loaded = FALSE;
 
@@ -92,7 +96,11 @@ class CI_Config {
 
 			foreach ($check_locations as $location)
 			{
+<<<<<<< HEAD
 				$file_path = $path.'config/'.$location.EXT;
+=======
+				$file_path = $path.'config/'.$location.'.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 				if (in_array($file_path, $this->is_loaded, TRUE))
 				{
@@ -144,6 +152,10 @@ class CI_Config {
 
 			$loaded = TRUE;
 			log_message('debug', 'Config file loaded: '.$file_path);
+<<<<<<< HEAD
+=======
+			break;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		if ($loaded === FALSE)
@@ -152,7 +164,11 @@ class CI_Config {
 			{
 				return FALSE;
 			}
+<<<<<<< HEAD
 			show_error('The configuration file '.$file.EXT.' does not exist.');
+=======
+			show_error('The configuration file '.$file.'.php'.' does not exist.');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		return TRUE;
@@ -202,10 +218,14 @@ class CI_Config {
 	// --------------------------------------------------------------------
 
 	/**
+<<<<<<< HEAD
 	 * Fetch a config file item - adds slash after item
 	 *
 	 * The second parameter allows a slash to be added to the end of
 	 * the item, in the case of a path.
+=======
+	 * Fetch a config file item - adds slash after item (if item is not empty)
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 *
 	 * @access	public
 	 * @param	string	the config item name
@@ -218,6 +238,13 @@ class CI_Config {
 		{
 			return FALSE;
 		}
+<<<<<<< HEAD
+=======
+		if( trim($this->config[$item]) == '')
+		{
+			return '';
+		}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 		return rtrim($this->config[$item], '/').'/';
 	}
@@ -226,6 +253,10 @@ class CI_Config {
 
 	/**
 	 * Site URL
+<<<<<<< HEAD
+=======
+	 * Returns base_url . index_page [. uri_string]
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	 *
 	 * @access	public
 	 * @param	string	the URI string
@@ -240,14 +271,58 @@ class CI_Config {
 
 		if ($this->item('enable_query_strings') == FALSE)
 		{
+<<<<<<< HEAD
+=======
+			$suffix = ($this->item('url_suffix') == FALSE) ? '' : $this->item('url_suffix');
+			return $this->slash_item('base_url').$this->slash_item('index_page').$this->_uri_string($uri).$suffix;
+		}
+		else
+		{
+			return $this->slash_item('base_url').$this->item('index_page').'?'.$this->_uri_string($uri);
+		}
+	}
+	
+	// -------------------------------------------------------------
+	
+	/**
+	 * Base URL
+	 * Returns base_url [. uri_string]
+	 * 
+	 * @access public
+	 * @param string $uri
+	 * @return string
+	 */
+	function base_url($uri = '')
+	{
+		return $this->slash_item('base_url').ltrim($this->_uri_string($uri),'/');
+	}
+	
+	// -------------------------------------------------------------
+	
+	/**
+	 * Build URI string for use in Config::site_url() and Config::base_url()
+	 * 
+	 * @access protected
+	 * @param  $uri
+	 * @return string
+	 */
+	protected function _uri_string($uri)
+	{
+		if ($this->item('enable_query_strings') == FALSE)
+		{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			if (is_array($uri))
 			{
 				$uri = implode('/', $uri);
 			}
+<<<<<<< HEAD
 
 			$index = $this->item('index_page') == '' ? '' : $this->slash_item('index_page');
 			$suffix = ($this->item('url_suffix') == FALSE) ? '' : $this->item('url_suffix');
 			return $this->slash_item('base_url').$index.trim($uri, '/').$suffix;
+=======
+			$uri = trim($uri, '/');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 		else
 		{
@@ -261,6 +336,7 @@ class CI_Config {
 					$str .= $prefix.$key.'='.$val;
 					$i++;
 				}
+<<<<<<< HEAD
 
 				$uri = $str;
 			}
@@ -271,6 +347,16 @@ class CI_Config {
 
 	// --------------------------------------------------------------------
 
+=======
+				$uri = $str;
+			}
+		}
+	    return $uri;
+	}
+
+	// --------------------------------------------------------------------
+	
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	/**
 	 * System URL
 	 *
@@ -326,4 +412,8 @@ class CI_Config {
 // END CI_Config class
 
 /* End of file Config.php */
+<<<<<<< HEAD
 /* Location: ./system/core/Config.php */
+=======
+/* Location: ./system/core/Config.php */
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90

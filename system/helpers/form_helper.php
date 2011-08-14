@@ -72,7 +72,11 @@ if ( ! function_exists('form_open'))
 
 		if (is_array($hidden) AND count($hidden) > 0)
 		{
+<<<<<<< HEAD
 			$form .= sprintf("\n<div>%s</div>", form_hidden($hidden));
+=======
+			$form .= sprintf("<div style=\"display:none\">%s</div>", form_hidden($hidden));
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		return $form;
@@ -1032,6 +1036,7 @@ if ( ! function_exists('_get_validation_object'))
 	{
 		$CI =& get_instance();
 
+<<<<<<< HEAD
 		// We set this as a variable since we're returning by reference
 		$return = FALSE;
 
@@ -1048,6 +1053,22 @@ if ( ! function_exists('_get_validation_object'))
 		}
 
 		return $CI->$object;
+=======
+		// We set this as a variable since we're returning by reference.
+		$return = FALSE;
+		
+		if (FALSE !== ($object = $CI->load->is_loaded('form_validation')))
+		{
+			if ( ! isset($CI->$object) OR ! is_object($CI->$object))
+			{
+				return $return;
+			}
+			
+			return $CI->$object;
+		}
+		
+		return $return;
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	}
 }
 

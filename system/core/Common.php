@@ -39,6 +39,11 @@
 * @param	string
 * @return	bool	TRUE if the current version is $version or higher
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('is_php'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function is_php($version = '5.0.0')
 	{
 		static $_is_php;
@@ -51,6 +56,10 @@
 
 		return $_is_php[$version];
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -64,6 +73,11 @@
  * @access	private
  * @return	void
  */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('is_really_writable'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function is_really_writable($file)
 	{
 		// If we're on a Unix server with safe_mode off we call is_writable
@@ -96,6 +110,10 @@
 		fclose($fp);
 		return TRUE;
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -112,6 +130,11 @@
 * @param	string	the class name prefix
 * @return	object
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('load_class'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function &load_class($class, $directory = 'libraries', $prefix = 'CI_')
 	{
 		static $_classes = array();
@@ -128,13 +151,21 @@
 		// thenin the local application/libraries folder
 		foreach (array(BASEPATH, APPPATH) as $path)
 		{
+<<<<<<< HEAD
 			if (file_exists($path.$directory.'/'.$class.EXT))
+=======
+			if (file_exists($path.$directory.'/'.$class.'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			{
 				$name = $prefix.$class;
 
 				if (class_exists($name) === FALSE)
 				{
+<<<<<<< HEAD
 					require($path.$directory.'/'.$class.EXT);
+=======
+					require($path.$directory.'/'.$class.'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 				}
 
 				break;
@@ -142,13 +173,21 @@
 		}
 
 		// Is the request a class extension?  If so we load it too
+<<<<<<< HEAD
 		if (file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.EXT))
+=======
+		if (file_exists(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php'))
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		{
 			$name = config_item('subclass_prefix').$class;
 
 			if (class_exists($name) === FALSE)
 			{
+<<<<<<< HEAD
 				require(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.EXT);
+=======
+				require(APPPATH.$directory.'/'.config_item('subclass_prefix').$class.'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 			}
 		}
 
@@ -157,7 +196,11 @@
 		{
 			// Note: We use exit() rather then show_error() in order to avoid a
 			// self-referencing loop with the Excptions class
+<<<<<<< HEAD
 			exit('Unable to locate the specified class: '.$class.EXT);
+=======
+			exit('Unable to locate the specified class: '.$class.'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		// Keep track of what we just loaded
@@ -166,6 +209,10 @@
 		$_classes[$class] = new $name();
 		return $_classes[$class];
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // --------------------------------------------------------------------
 
@@ -176,6 +223,11 @@
 * @access	public
 * @return	array
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('is_loaded'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function is_loaded($class = '')
 	{
 		static $_is_loaded = array();
@@ -187,6 +239,10 @@
 
 		return $_is_loaded;
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -199,6 +255,11 @@
 * @access	private
 * @return	array
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('get_config'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function &get_config($replace = array())
 	{
 		static $_config;
@@ -209,9 +270,15 @@
 		}
 
 		// Is the config file in the environment folder?
+<<<<<<< HEAD
 		if ( ! defined('ENVIRONMENT') OR ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config'.EXT))
 		{
 			$file_path = APPPATH.'config/config'.EXT;
+=======
+		if ( ! defined('ENVIRONMENT') OR ! file_exists($file_path = APPPATH.'config/'.ENVIRONMENT.'/config.php'))
+		{
+			$file_path = APPPATH.'config/config.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		}
 
 		// Fetch the config file
@@ -242,6 +309,10 @@
 
 		return $_config[0] =& $config;
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -251,6 +322,11 @@
 * @access	public
 * @return	mixed
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('config_item'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function config_item($item)
 	{
 		static $_config_item = array();
@@ -268,6 +344,10 @@
 
 		return $_config_item[$item];
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -283,12 +363,21 @@
 * @access	public
 * @return	void
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('show_error'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
 	{
 		$_error =& load_class('Exceptions', 'core');
 		echo $_error->show_error($heading, $message, 'error_general', $status_code);
 		exit;
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -302,12 +391,21 @@
 * @access	public
 * @return	void
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('show_404'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function show_404($page = '', $log_error = TRUE)
 	{
 		$_error =& load_class('Exceptions', 'core');
 		$_error->show_404($page, $log_error);
 		exit;
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -320,6 +418,11 @@
 * @access	public
 * @return	void
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('log_message'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function log_message($level = 'error', $message, $php_error = FALSE)
 	{
 		static $_log;
@@ -332,6 +435,10 @@
 		$_log =& load_class('Log');
 		$_log->write_log($level, $message, $php_error);
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // ------------------------------------------------------------------------
 
@@ -343,6 +450,11 @@
  * @param	string
  * @return	void
  */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('set_status_header'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function set_status_header($code = 200, $text = '')
 	{
 		$stati = array(
@@ -417,6 +529,10 @@
 			header("HTTP/1.1 {$code} {$text}", TRUE, $code);
 		}
 	}
+<<<<<<< HEAD
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 // --------------------------------------------------------------------
 
@@ -434,6 +550,11 @@
 * @access	private
 * @return	void
 */
+<<<<<<< HEAD
+=======
+if ( ! function_exists('_exception_handler'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function _exception_handler($severity, $message, $filepath, $line)
 	{
 		 // We don't bother with "strict" notices since they tend to fill up
@@ -463,6 +584,7 @@
 
 		$_error->log_exception($severity, $message, $filepath, $line);
 	}
+<<<<<<< HEAD
 
 	// --------------------------------------------------------------------
 
@@ -476,6 +598,24 @@
 	 * @param	string
 	 * @return	string
 	 */
+=======
+}
+
+// --------------------------------------------------------------------
+
+/**
+ * Remove Invisible Characters
+ *
+ * This prevents sandwiching null characters
+ * between ascii characters, like Java\0script.
+ *
+ * @access	public
+ * @param	string
+ * @return	string
+ */
+if ( ! function_exists('remove_invisible_characters'))
+{
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	function remove_invisible_characters($str, $url_encoded = TRUE)
 	{
 		$non_displayables = array();
@@ -499,7 +639,11 @@
 
 		return $str;
 	}
+<<<<<<< HEAD
 
+=======
+}
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 /* End of file Common.php */
 /* Location: ./system/core/Common.php */

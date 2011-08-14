@@ -98,7 +98,11 @@ if (defined('ENVIRONMENT'))
 	// if your controller is not in a sub-folder within the "controllers" folder
 	// $routing['directory'] = '';
 
+<<<<<<< HEAD
 	// The controller class file name.  Example:  Mycontroller.php
+=======
+	// The controller class file name.  Example:  Mycontroller
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	// $routing['controller'] = '';
 
 	// The controller function you wish to be called.
@@ -163,6 +167,10 @@ if (defined('ENVIRONMENT'))
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
 	// The PHP file extension
+<<<<<<< HEAD
+=======
+	// this global constant is deprecated.
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 	define('EXT', '.php');
 
 	// Path to the system folder
@@ -198,7 +206,11 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
+<<<<<<< HEAD
 require_once BASEPATH.'core/CodeIgniter'.EXT;
+=======
+require_once BASEPATH.'core/CodeIgniter.php';
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 
 /* End of file index.php */
 /* Location: ./index.php */

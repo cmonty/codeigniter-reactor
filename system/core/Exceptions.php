@@ -128,7 +128,11 @@ class CI_Exceptions {
 			ob_end_flush();
 		}
 		ob_start();
+<<<<<<< HEAD
 		include(APPPATH.'errors/'.$template.EXT);
+=======
+		include(APPPATH.'errors/'.$template.'.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		return $buffer;
@@ -164,7 +168,11 @@ class CI_Exceptions {
 			ob_end_flush();
 		}
 		ob_start();
+<<<<<<< HEAD
 		include(APPPATH.'errors/error_php'.EXT);
+=======
+		include(APPPATH.'errors/error_php.php');
+>>>>>>> 254217a8655a14716bb673a0abde81c0b80ccd90
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		echo $buffer;
